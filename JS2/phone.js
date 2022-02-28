@@ -6,7 +6,7 @@ const loadPhones = () => {
     const url = `https://openapi.programming-hero.com/api/phones?search=${searchText}`;
     fetch(url)
         .then(response => response.json())
-        .then(phone => console.log(phone.data));
+        .then(phone => displayPhones(phone.data));
 }
 const displayPhones = phones => {
     const phoneSection = document.getElementById('phone-section');
@@ -28,8 +28,14 @@ const displayPhones = phones => {
      
      `;
         phoneSection.appendChild(div);
-
     });
+}
+const phoneDetails = (phoneData) => {
+    const url2 = `https://openapi.programming-hero.com/api/phone/${phoneData}`;
+    console.log(url2);
+    fetch(url2)
+        .then(response => response.json())
+        .then(data => console.log(data));
 }
 
 
