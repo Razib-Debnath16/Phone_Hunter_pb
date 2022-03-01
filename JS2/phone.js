@@ -1,3 +1,4 @@
+//LoadPhones
 const loadPhones = () => {
     const searchField = document.getElementById('search-field');
     const searchText = searchField.value;
@@ -7,21 +8,25 @@ const loadPhones = () => {
     fetch(url)
         .then(response => response.json())
         .then(phone => displayPhones(phone.data));
-}
+};
+// Show matching phones
 const displayPhones = phones => {
     const phoneSection = document.getElementById('phone-section');
-    phoneSection.innerHTML = '';
-    // mealSection.textContent = '';
+    // phoneSection.innerHTML = '';
+    phoneSection.textContent = '';
     phones.forEach(phone => {
         console.log(phone);
         const div = document.createElement('div');
         div.classList.add('col');
         div.innerHTML = `
-     <div class="card w-100" style="background-color: rgba(255, 248, 220, 0.247);" onclick="phoneDetails('${phone.slug}')">
-                <img src="${phone.image}" class="card-img-top" style="height: 300px; width: 300px;" alt="...">
+     <div class="card w-100" style="background-color: rgba(255, 248, 220, 0.247);" >
+                <img src="${phone.image}" class="card-img-top" style="height: 250px; width: 250px;" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">${phone.phone_name}</h5>
                     <p class="card-text">${phone.brand}</p>
+                    <button class="btn btn-outline-secondary"
+                    style="background-color: turquoise; color: black; padding: 5px; border-radius: 10px; height:40px; width: 120px;" type="button" onclick="loadphoneDetails('${phone.slug}')"
+                    id="details-button">Details</button>
                 </div>
                 
             </div>
@@ -29,16 +34,45 @@ const displayPhones = phones => {
      `;
         phoneSection.appendChild(div);
     });
-}
-const phoneDetails = (phoneData) => {
+};
+
+// loaddata by searching slug / phone_id
+const loadphoneDetails = (phoneData) => {
     const url2 = `https://openapi.programming-hero.com/api/phone/${phoneData}`;
-    console.log(url2);
+    // console.log(url2);
     fetch(url2)
         .then(response => response.json())
-        .then(data => console.log(data));
+        .then(data => displayPhoneDetails(data.data));
+};
+// display phone details
+const displayPhoneDetails = details => {
+    const phoneDetails = document.getElementById('phone-details');
+    phoneDetails.textContent = '';
+    const div = document.createElement('div');
+    if (details.releaseDate == "") {
+        details.releaseDate = 'Not Available';
+    }
+    else {
+        details.releaseDate = details.releaseDate;
+    }
+    div.innerHTML = `
+    <div class="card w-100" style="background-color: rgba(255, 248, 220, 0.247);">
+                <img src="${details.image}" class="card-img-top" style="height: 250px; width: 250px;" alt="...">
+                <div class="card-body">
+                    <h2 class="card-text">Brand: ${details.brand}</h2>
+                    <h3 class="card-title">Model: ${details.name}</h3>
+                    <h4>Release Date : ${details.releaseDate}</h4>
+                    <h4>Chipset : ${details.mainFeatures.chipSet}</h4>
+                    <h4>Display Size: ${details.mainFeatures.displaySize}</h4>
+                    <h4>Storage : ${details.mainFeatures.memory}</h4>                  
+                </div>              
+            </div>
+    `
+    phoneDetails.appendChild(div);
 }
 
 
+// 
 document.getElementById('search-button').addEventListener('click', function () {
     loadPhones();
-})
+});
