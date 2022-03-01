@@ -13,6 +13,9 @@ body{
     margin-right: 30px; */
     padding: 30px;
 }
+#spinner{
+    display: none;
+}
 #showMore-section{
     display: none;
 }
