@@ -23,15 +23,12 @@ const displayPhones = phones => {
     const phoneSection = document.getElementById('phone-section');
     phoneSection.textContent = '';
     if (phones.length == 0) {
-        const div = document.createElement('div');
+        toggleSpinner('none');
         document.getElementById('showMore-section').style.display = 'none';
-        div.innerHTML = `
-          <h1 class="text-center my-3">No Device Found </h1>
-          
-        `;
-        phoneSection.appendChild(div);
+        document.getElementById('no-match').style.display = 'block';
     }
     else {
+        document.getElementById('no-match').style.display = 'none';
         phones.forEach(phone => {
             if (phone1.length >= 20) {
                 phone2.push(phone);
@@ -72,7 +69,7 @@ const displayPhones = phones => {
         document.getElementById('showMore-button').addEventListener('click', function () {
             // show remaining phones
             phone2.forEach(phone => {
-
+                document.getElementById('no-match').style.display = 'none';
                 document.getElementById('phone-details').style.display = 'none';
                 const div = document.createElement('div');
                 div.classList.add('col');

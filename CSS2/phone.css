@@ -16,6 +16,9 @@ body{
 #spinner{
     display: none;
 }
+#no-match{
+    display: none;
+}
 #showMore-section{
     display: none;
 }
