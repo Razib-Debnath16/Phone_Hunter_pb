@@ -13,14 +13,34 @@ const loadPhones = () => {
 };
 // Show matching phones
 const displayPhones = phones => {
+    console.log(phones);
     const phoneSection = document.getElementById('phone-section');
     // phoneSection.innerHTML = '';
     phoneSection.textContent = '';
-    phones.forEach(phone => {
-        // console.log(phone);
+    // document.getElementById('search-field').value ==
+    if (phones.length == 0) {
         const div = document.createElement('div');
-        div.classList.add('col');
         div.innerHTML = `
+          <h1 class="text-center my-3">No Device Found </h1>
+        `;
+        phoneSection.appendChild(div);
+    }
+    else {
+        const phone1 = [];
+        const phone2 = [];
+        phones.forEach(phone => {
+            if (phone1.length >= 20) {
+                phone2.push(phone);
+            }
+            else (
+                phone1.push(phone)
+            )
+        })
+        phone1.forEach(phone => {
+            // console.log(phone);
+            const div = document.createElement('div');
+            div.classList.add('col');
+            div.innerHTML = `
      <div class="card w-100" style="background-color: rgba(255, 248, 220, 0.247);" >
                 <img src="${phone.image}" class="card-img-top" style="height: 250px; width: 250px;" alt="...">
                 <div class="card-body">
@@ -34,8 +54,9 @@ const displayPhones = phones => {
             </div>
      
      `;
-        phoneSection.appendChild(div);
-    });
+            phoneSection.appendChild(div);
+        });
+    }
 };
 
 // load data by searching slug / phone_id
