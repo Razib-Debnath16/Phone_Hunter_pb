@@ -1,4 +1,7 @@
 //Load Phones
+let count = 0;
+let phone1 = [];
+let phone2 = [];
 const loadPhones = () => {
     const searchField = document.getElementById('search-field');
     const searchText = searchField.value;
@@ -9,11 +12,11 @@ const loadPhones = () => {
     const url = `https://openapi.programming-hero.com/api/phones?search=${searchText}`;
     fetch(url)
         .then(response => response.json())
-        .then(phone => displayPhones(phone.data));
+        .then(data => displayPhones(data.data));
 };
 // Show matching phones
 const displayPhones = phones => {
-    console.log(phones);
+    // console.log(phones);
     const phoneSection = document.getElementById('phone-section');
     // phoneSection.innerHTML = '';
     phoneSection.textContent = '';
@@ -26,8 +29,6 @@ const displayPhones = phones => {
         phoneSection.appendChild(div);
     }
     else {
-        const phone1 = [];
-        const phone2 = [];
         phones.forEach(phone => {
             if (phone1.length >= 20) {
                 phone2.push(phone);
@@ -35,7 +36,8 @@ const displayPhones = phones => {
             else (
                 phone1.push(phone)
             )
-        })
+        });
+        console.log(phone1, phone2);
         phone1.forEach(phone => {
             // console.log(phone);
             const div = document.createElement('div');
@@ -54,8 +56,43 @@ const displayPhones = phones => {
             </div>
      
      `;
+            phone1 = [];
             phoneSection.appendChild(div);
         });
+        if (phones.length > 20) {
+            count = 0;
+            document.getElementById('showMore-section').style.display = 'block';
+        }
+
+        document.getElementById('showMore-button').addEventListener('click', function () {
+            count++;
+            if (count == 1) {
+                phone2.forEach(phone => {
+                    // console.log(phone);
+                    const div = document.createElement('div');
+                    div.classList.add('col');
+                    div.innerHTML = `
+             <div class="card w-100" style="background-color: rgba(255, 248, 220, 0.247);" >
+                        <img src="${phone.image}" class="card-img-top" style="height: 250px; width: 250px;" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">${phone.phone_name}</h5>
+                            <p class="card-text">${phone.brand}</p>
+                            <button class="btn btn-outline-secondary"
+                            style="background-color: turquoise; color: black; padding: 5px; border-radius: 10px; height:40px; width: 120px;" type="button" onclick="loadphoneDetails('${phone.slug}')"
+                            id="details-button">Details</button>
+                        </div>
+                        
+                    </div>
+             
+             `;
+                    phoneSection.appendChild(div);
+                    phone2 = [];
+                });
+                document.getElementById('showMore-section').style.display = 'none';
+            }
+
+        })
+
     }
 };
 
@@ -108,5 +145,6 @@ const displayPhoneDetails = details => {
 
 // 
 document.getElementById('search-button').addEventListener('click', function () {
+
     loadPhones();
 });

@@ -13,3 +13,6 @@ body{
     margin-right: 30px; */
     padding: 30px;
 }
+#showMore-section{
+    display: none;
+}
